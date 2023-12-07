@@ -96,13 +96,14 @@ async function createNewTask(newTaskText, userId) {
 // }
 
 // Function to render tasks
+// Function to render tasks
 function renderTasks(taskArray) {
   const taskList = document.getElementById('taskList');
   taskList.innerHTML = '';
 
   taskArray.forEach((task) => {
     const taskItem = document.createElement('div');
-    taskItem.classList.add('task-item'); // Add a class for styling
+    taskItem.classList.add('task-item');
 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
@@ -145,6 +146,27 @@ function renderTasks(taskArray) {
     taskItem.appendChild(updateButton);
     taskList.appendChild(taskItem);
   });
+}
+
+// Function to delete a task
+async function deleteTask(taskId) {
+  try {
+    const response = await fetch(`https://65708bf009586eff66419795.mockapi.io/tasks/${taskId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${userToken}`
+      }
+    });
+    if (!response.ok) {
+      throw new Error('Failed to delete task');
+    }
+    // Remove the task from the local array
+    tasks = tasks.filter((task) => task.id !== taskId);
+    // Re-render the updated task list
+    renderTasks(tasks);
+  } catch (error) {
+    console.error('Error deleting task:', error);
+  }
 }
 
 // Function to delete a task
