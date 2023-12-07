@@ -68,6 +68,33 @@ async function createNewTask(newTaskText, userId) {
   }
 }
 
+// // Function to render tasks
+// function renderTasks(taskArray) {
+//   const taskList = document.getElementById('taskList');
+//   taskList.innerHTML = '';
+
+//   taskArray.forEach((task) => {
+//     const taskItem = document.createElement('div');
+//     taskItem.innerHTML = `
+//       <input type="checkbox" ${task.completed ? 'checked' : ''}>
+//       <span>${task.text}</span>
+//     `;
+//     taskList.appendChild(taskItem);
+
+//     // Add event listener for checkbox change
+//     const checkbox = taskItem.querySelector('input[type="checkbox"]');
+//     checkbox.addEventListener('change', async () => {
+//       try {
+//         // Update the completion status of the task for the logged-in user
+//         task.completed = !task.completed;
+//         await updateTaskStatus(task);
+//       } catch (error) {
+//         console.error('Error updating task:', error);
+//       }
+//     });
+//   });
+// }
+
 // Function to render tasks
 function renderTasks(taskArray) {
   const taskList = document.getElementById('taskList');
@@ -75,25 +102,70 @@ function renderTasks(taskArray) {
 
   taskArray.forEach((task) => {
     const taskItem = document.createElement('div');
-    taskItem.innerHTML = `
-      <input type="checkbox" ${task.completed ? 'checked' : ''}>
-      <span>${task.text}</span>
-    `;
-    taskList.appendChild(taskItem);
+    taskItem.classList.add('task-item'); // Add a class for styling
 
-    // Add event listener for checkbox change
-    const checkbox = taskItem.querySelector('input[type="checkbox"]');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = task.completed;
     checkbox.addEventListener('change', async () => {
       try {
-        // Update the completion status of the task for the logged-in user
         task.completed = !task.completed;
         await updateTaskStatus(task);
       } catch (error) {
         console.error('Error updating task:', error);
       }
     });
+
+    const taskText = document.createElement('span');
+    taskText.textContent = task.text;
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'Delete';
+    deleteButton.addEventListener('click', async () => {
+      try {
+        await deleteTask(task.id);
+      } catch (error) {
+        console.error('Error deleting task:', error);
+      }
+    });
+
+    const updateButton = document.createElement('button');
+    updateButton.textContent = 'Update';
+    updateButton.addEventListener('click', async () => {
+      const updatedText = prompt('Enter updated task text:', task.text);
+      if (updatedText !== null && updatedText.trim() !== '') {
+        task.text = updatedText.trim();
+        await updateTaskStatus(task);
+      }
+    });
+
+    taskItem.appendChild(checkbox);
+    taskItem.appendChild(taskText);
+    taskItem.appendChild(deleteButton);
+    taskItem.appendChild(updateButton);
+    taskList.appendChild(taskItem);
   });
 }
+
+// Function to delete a task
+async function deleteTask(taskId) {
+  try {
+    const response = await fetch(`https://65708bf009586eff66419795.mockapi.io/tasks/${taskId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${userToken}`
+      }
+    });
+    if (!response.ok) {
+      throw new Error('Failed to delete task');
+    }
+    tasks = tasks.filter((task) => task.id !== taskId);
+    renderTasks(tasks);
+  } catch (error) {
+    console.error('Error deleting task:', error);
+  }
+}
+
 
 // Initial fetch of tasks for the logged-in user when the page loads
 const loggedInUserId = sessionStorage.getItem('userId'); // Retrieve user ID
