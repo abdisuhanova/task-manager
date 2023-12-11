@@ -137,6 +137,7 @@ function renderTasks(taskArray) {
       if (updatedText !== null && updatedText.trim() !== '') {
         task.text = updatedText.trim();
         await updateTaskStatus(task);
+        renderTasks(taskArray);
       }
     });
 
@@ -237,7 +238,7 @@ function logout() {
   // Example: sessionStorage.removeItem('userId');
   
   // Redirect to the login page
-  window.location.href = 'login.html';
+  window.location.href = 'index.html';
 }
 
 // Logout button event listener
@@ -245,4 +246,17 @@ const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', logout);
 }
+async function getUserData() {
+  try {
+    const response = await fetch('https://65708bf009586eff66419795.mockapi.io/users');
+    const users = await response.json();
+    if (users.length > 0) {
+      const usernameElement = document.getElementById('username');
+      usernameElement.textContent = users[0].username; // Assuming the first user for simplicity
+    }
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+  }
+}
 
+getUserData();

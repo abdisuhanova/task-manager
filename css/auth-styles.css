@@ -27,12 +27,17 @@
     border: 1px solid #ccc;
     box-sizing: border-box;
   }
+  input[type="text"],
+  input[type="password"] {
+    width: calc(100% - 22px); /* Adjusted width to accommodate the longest placeholder */
+  }
   
   button {
     cursor: pointer;
     background-color: #007bff;
     color: #fff;
     border: none;
+    transition: background-color 0.3s ease;
   }
   
   button:hover {
@@ -49,3 +54,17 @@
     text-decoration: underline;
   }
   
+form {
+  text-align: center;
+}
+
+/* Style links for better visibility */
+p a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+p a:hover {
+  color: #0056b3;
+}

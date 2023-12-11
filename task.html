@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+  <header>
+    <h1>Welcome to Task Manager</h1>
+    <!-- User dropdown -->
+    <div class="user-dropdown" id="userDropdown">
+      <button class="fa fa-user-circle" onclick="toggleUserDropdown()"></button>
+      <div class="user-dropdown-content" id="userDropdownContent">
+        <a href="#" id="loggedInAs">Logged in as:</a>
+        <a href="#" id="username"></a>
+        <a href="#" id="logoutBtn">Logout</a>
+      </div>
+    </div>
+    <!-- End of User dropdown -->
+  </header>
+
+  <div class="container">
+    <h2>Add a Task</h2>
+<div class="buttontask">
+  <form id="taskForm">
+    <input type="text" id="taskInput" placeholder="Enter task" required>
+    <button id="addTasksBtn" type="submit">Add Task</button>
+  </form>
+</div>
+  </div>
+
+  <div class="container">
+    <h2>Tasks</h2>
+    <div id="taskList"></div>
+    <div>
+      <button id="allTasksBtn">All Tasks</button>
+      <button id="completedTasksBtn">Completed Tasks</button>
+      <button id="activeTasksBtn">Active Tasks</button>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

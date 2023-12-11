@@ -19,7 +19,7 @@ async function handleSignup(username, password) {
         // Store user ID in session storage
         sessionStorage.setItem('userId', userId);
         // Signup successful - redirect to login page or perform other actions
-        window.location.href = 'login.html';
+        window.location.href = 'index.html';
       } else {
         // Handle signup error
         alert('Signup failed. Please try again.');
@@ -52,4 +52,3 @@ async function handleSignup(username, password) {
       alert('Signup failed. Please check your network connection.');
     }
   });
-s  
